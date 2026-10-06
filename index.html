@@ -1,0 +1,553 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Instagram Boost</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(
+45deg,
+#405DE6,
+#5851DB,
+#833AB4,
+#C13584,
+#E1306C,
+#FD1D1D,
+#F56040,
+#F77737,
+#FCAF45,
+#FFDC80
+);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+.page{
+display:none;
+width:100%;
+max-width:400px;
+padding:20px;
+box-sizing:border-box;
+}
+
+.active{
+display:block;
+}
+
+.card{
+background:white;
+color:black;
+padding:25px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 0 25px rgba(0,0,0,0.3);
+}
+
+h1{
+margin-bottom:20px;
+color:#262626;
+}
+
+input,
+select{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:16px;
+box-sizing:border-box;
+}
+
+.btn{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:8px;
+font-size:18px;
+color:white;
+background:#0095f6;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn:hover{
+background:#1877f2;
+box-shadow:0 0 20px #0095f6,0 0 40px #0095f6;
+transform:scale(1.03);
+}
+
+.qr{
+width:220px;
+height:220px;
+object-fit:contain;
+margin:20px auto;
+display:block;
+}
+
+.amount{
+font-size:26px;
+font-weight:bold;
+color:#0095f6;
+margin:10px 0;
+}
+
+.package-name{
+font-size:18px;
+font-weight:bold;
+color:#262626;
+}
+
+.timer{
+font-size:22px;
+font-weight:bold;
+color:#0095f6;
+margin-top:10px;
+}
+
+.thank{
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.08)}
+100%{transform:scale(1)}
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ================= PAGE 1 ================= -->
+
+<div class="page active" id="page1">
+
+<div class="card">
+
+<h1>Instagram</h1>
+
+<input
+id="username"
+placeholder="Enter Instagram Username"
+>
+
+<button class="btn" onclick="next1()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= PAGE 2 ================= -->
+
+<div class="page" id="page2">
+
+<div class="card">
+
+<h1>Enter Details</h1>
+
+<input
+id="name"
+placeholder="Full Name"
+>
+
+<input
+id="mobile"
+placeholder="Mobile Number"
+type="tel"
+>
+
+<select id="package">
+
+<option value="">
+Select Package
+</option>
+
+<option value="1K Followers ₹28">
+1K Followers ₹28
+</option>
+
+<option value="5K Followers ₹50">
+5K Followers ₹50
+</option>
+
+<option value="10K Followers ₹100">
+10K Followers ₹100
+</option>
+
+<option value="20K Followers ₹200">
+20K Followers ₹200
+</option>
+
+<option value="50K Followers ₹500">
+50K Followers ₹500
+</option>
+
+</select>
+
+<button class="btn" onclick="next2()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= PAGE 3 ================= -->
+
+<div class="page" id="page3">
+
+<div class="card">
+
+<h1>Scan & Pay</h1>
+
+<p class="package-name" id="selectedPackage">
+</p>
+
+<p class="amount" id="amount">
+</p>
+
+<img
+id="qrImage"
+class="qr"
+src=""
+alt="Payment QR Code"
+>
+
+<p>
+Scan the QR code and complete the payment.
+</p>
+
+<input
+type="file"
+id="file"
+accept="image/*"
+>
+
+<button class="btn" onclick="upload()">
+Upload Screenshot
+</button>
+
+<p class="timer" id="timer">
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================= PAGE 4 ================= -->
+
+<div class="page" id="page4">
+
+<div class="card thank">
+
+<h1>Thank You ❤️</h1>
+
+<p>
+Your order has been received.
+</p>
+
+<p>
+Followers will be delivered within
+</p>
+
+<h2>
+24 Hours
+</h2>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+// ================= GOOGLE SCRIPT =================
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbxyE0xsf9yMWKqZKAJm2CUnkUvc0-kOkHfFQcty1nDqZKbrSg8T7pJh6yJNHyAaUopl0g/exec";
+
+
+let userData = {};
+
+
+// ================= PAGE SWITCH =================
+
+function show(page)
+{
+
+document
+.querySelectorAll(".page")
+.forEach(p =>
+p.classList.remove("active")
+);
+
+document
+.getElementById(page)
+.classList.add("active");
+
+}
+
+
+// ================= PAGE 1 =================
+
+function next1()
+{
+
+let username =
+document.getElementById("username")
+.value
+.trim();
+
+if(username === "")
+{
+
+alert("Enter Username");
+
+return;
+
+}
+
+userData.username = username;
+
+show("page2");
+
+}
+
+
+// ================= PAGE 2 =================
+
+function next2()
+{
+
+let name =
+document.getElementById("name")
+.value
+.trim();
+
+let mobile =
+document.getElementById("mobile")
+.value
+.trim();
+
+let packageValue =
+document.getElementById("package")
+.value;
+
+
+if(
+name === "" ||
+mobile === "" ||
+packageValue === ""
+)
+{
+
+alert("Fill all details");
+
+return;
+
+}
+
+
+// Save customer data
+
+userData.name = name;
+
+userData.mobile = mobile;
+
+userData.package = packageValue;
+
+
+// ================= PACKAGE DATA =================
+
+const packageData = {
+
+"1K Followers ₹28": {
+
+name:"1K Followers",
+
+amount:"₹28",
+
+qr:"qr-1k.png"
+
+},
+
+"5K Followers ₹50": {
+
+name:"5K Followers",
+
+amount:"₹50",
+
+qr:"qr-5k.png"
+
+},
+
+"10K Followers ₹100": {
+
+name:"10K Followers",
+
+amount:"₹100",
+
+qr:"qr-10k.png"
+
+},
+
+"20K Followers ₹200": {
+
+name:"20K Followers",
+
+amount:"₹200",
+
+qr:"qr-20k.png"
+
+},
+
+"50K Followers ₹500": {
+
+name:"50K Followers",
+
+amount:"₹500",
+
+qr:"qr-50k.png"
+
+}
+
+};
+
+
+// Get selected package
+
+let selected =
+packageData[packageValue];
+
+
+if(!selected)
+{
+
+alert("Invalid package");
+
+return;
+
+}
+
+
+// ================= SHOW PACKAGE =================
+
+document.getElementById("selectedPackage")
+.innerHTML =
+selected.name;
+
+
+document.getElementById("amount")
+.innerHTML =
+"Pay " + selected.amount;
+
+
+// ================= SHOW QR =================
+
+document.getElementById("qrImage")
+.src =
+selected.qr;
+
+
+// Go to payment page
+
+show("page3");
+
+}
+
+
+// ================= UPLOAD =================
+
+function upload()
+{
+
+let file =
+document.getElementById("file")
+.files.length;
+
+
+if(file === 0)
+{
+
+alert("Upload Payment Screenshot");
+
+return;
+
+}
+
+
+// Send customer details
+
+fetch(SCRIPT_URL,{
+
+method:"POST",
+
+body:JSON.stringify(userData)
+
+})
+.catch(error =>
+{
+
+console.log("Google Sheet Error:",error);
+
+});
+
+
+let time = 5;
+
+
+document.getElementById("timer")
+.innerHTML =
+"Verifying " + time + "...";
+
+
+let interval =
+setInterval(function()
+{
+
+time--;
+
+
+document.getElementById("timer")
+.innerHTML =
+"Verifying " + time + "...";
+
+
+if(time <= 0)
+{
+
+clearInterval(interval);
+
+show("page4");
+
+}
+
+},1000);
+
+}
+
+</script>
+
+</body>
+</html>
+```
